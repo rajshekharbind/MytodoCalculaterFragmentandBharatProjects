@@ -9,8 +9,11 @@ import {  createContext ,useReducer } from "react";
 const postListReducer = (currPostList,action) =>{
     let newPostList = currPostList;
     if(action.type === 'DELETE_POST'){
-        newPostList = currPostList.filter((post) => post.id !== action.payload.postId);
-    };
+        newPostList = currPostList.filter((post) => post.id !== action.payload.postId
+    );
+    } else if (action.type === 'ADD_POST'){
+        newPostList = [action.payload, ...currPostList]
+    }
     return newPostList;
 };
 
@@ -20,8 +23,21 @@ const PostListProvider = ({children}) =>{
     postListReducer,DEFAULT_POST_LIST
 );
    
-   const addPost =() =>{
-    
+   const addPost =(userId,postTitle,postBody,reactions,tags) =>{
+    //console.log(`${userId} ${postTitle} ${postBody} ${reactions} ${tags}`);
+    dispatchPostList({
+        type:'ADD_POST',
+        payload:{
+            
+                id:Date.now() ,
+                title:postTitle,
+                body: postBody,
+                reaction:reactions,
+                userId:userId,
+                tags:tags,
+        },
+    });
+
    };
 
    const deletePost = (postId) => {
@@ -46,7 +62,7 @@ const DEFAULT_POST_LIST =[
         id:"1",
         title:"Going to varanasi",
         body: "Hi Friends, I am going to varanasi for my vacation. Hope to you enjoy a lot. peace out..",
-        reaction:20,
+        reactions:20,
         userId:"user-9",
         tags:["vacation","varanasi","enjoy"],
 },
@@ -54,7 +70,7 @@ const DEFAULT_POST_LIST =[
     id:"9",
     title:"Going to varanasi",
     body: "Hi Friends, I am going to varanasi for my vacation. Hope to you enjoy a lot. peace out..",
-    reaction:2,
+    reactions:2,
     userId:"user-9",
     tags:["vacation","varanasi","enjoy"],
 },
