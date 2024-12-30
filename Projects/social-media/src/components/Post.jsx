@@ -3,6 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { PostList } from "../store/post-list-store";
 
 const Post = ({ post }) =>{
+  const {deletePost} = useContext(PostList);
     return(
       <div className="card post-card" style={{width:"40rem"}}>
       <div className="card-body">
